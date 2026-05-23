@@ -1,4 +1,6 @@
-﻿namespace Dsw2026Ej11.Collections;
+﻿using Dsw2026Ej11.Domain;
+
+namespace Dsw2026Ej11.Collections;
 
 /*
  * Para cada punto crear un método que permita:
@@ -16,4 +18,82 @@
  */
 public class CasoLinq
 {
+    private List<Libro> libros = Libro.CrearLista();
+
+    public Libro GetPrimero()
+    {
+        return libros.First();
+    }
+    
+    public Libro GetUltimo()
+    {
+        return libros.Last();
+    }
+
+    public decimal GetTotalPrecios()
+    {
+        return libros.Sum(l => l.Precio);
+    }
+    
+    public decimal GetPromedioPrecios()
+    {
+        return libros.Average(l => l.Precio);
+    }
+
+    public IEnumerable<Libro> GetListById()
+    {
+        var consulta = from l in libros
+                       where l.Id > 15
+                       select l;
+
+        return consulta
+    }
+
+    public IEnumerable<string> GetLibro()
+    {
+        var consulta = from l in libros
+                       select l.Titulo + " - " + l.Precio.ToString("C");
+        return consulta;
+    }
+
+    public Libro GetMayorPrecio()
+    {
+        decimal maximoPrecio = libros.Max(l => l.Precio);
+        var consulta = from l in libros
+                       where l.Precio == maximoPrecio
+                       select l;
+
+        return consulta.First();
+    }
+
+    public Libro GetMenorPrecio()
+    {
+        decimal minimoPrecio = libros.Min(l => l.Precio);
+        var consulta = from l in libros
+                       where l.Precio == minimoPrecio
+                       select l;
+        
+        return consulta.First();
+    }
+
+    public IEnumerable<Libro> GetMayorPromedio()
+    {
+        decimal promedio = GetPromedioPrecios();
+
+        var consulta = from l in libros
+                       where l.Precio > promedio
+                       select l;
+
+        return consulta;
+    }
+
+    public IEnumerable<Libro> GetLibrosOrdenados()
+    {
+        var consulta = from l in libros
+                       orderby l.Titulo descending
+                       select l;
+
+        return consulta; 
+    }
+
 }
